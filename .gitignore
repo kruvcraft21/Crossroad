@@ -1,2 +1,4 @@
 ﻿# Cmake build
 /build
+# setting vscode
+settings.json

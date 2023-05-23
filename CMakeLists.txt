@@ -4,7 +4,10 @@ project(Crossroad VERSION 0.1.0)
 add_subdirectory(libs/raylib)
 
 add_executable(Crossroad src/main.cpp
-                        src/road.h)
+                        src/road.h
+                        src/road.cpp
+                        src/roadcontroller.h
+                        src/roadcontroller.cpp)
 
 target_link_libraries(Crossroad PUBLIC raylib)
 

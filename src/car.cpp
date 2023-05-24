@@ -1,5 +1,7 @@
 ﻿#include "car.h"
 #include <math.h>
+#include <iostream>
+
 
 Car::Car(Vector2 &dir, Vector2 &startpos) {
     direction = dir;
@@ -20,7 +22,6 @@ Vector2 Car::get_pos() {
 }
 
 void Car::Run() {
-    int speed = 2;
     pos.x += direction.x * speed;
     pos.y += direction.y * speed;
 }
@@ -45,17 +46,114 @@ void Simple_Car::set_color() {
     }
 }
 
-Simple_Car::Simple_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {
+Simple_Car::Simple_Car(Vector2 &dir, Vector2 &startpos, Rectangle &finalpos) : Car(dir, startpos) {
     set_color();
+    final = finalpos;
 }
 
 void Simple_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center)
 {
+    bool saw_obstacle = false;
+    float rotate = atan2(direction.x, direction.y);
+    Vector2 up_side = {
+        pos.x + sinf(rotate) * 100,
+        pos.y + cos(rotate) * 100
+    };
+    Vector2 right_side = {
+        pos.x + sinf(rotate - (60 * DEG2RAD)) * 110,
+        pos.y + cos(rotate - (60 * DEG2RAD)) * 110
+    };
+    Vector2 left_side = {
+        pos.x + sinf(rotate + (60 * DEG2RAD)) * 110,
+        pos.y + cos(rotate + (60 * DEG2RAD)) * 110
+    };
+
+    Vector2 right_side_light = {
+        pos.x + sinf(rotate - (60 * DEG2RAD)) * 50,
+        pos.y + cos(rotate - (60 * DEG2RAD)) * 50
+    };
+    Vector2 left_side_light = {
+        pos.x + sinf(rotate + (60 * DEG2RAD)) * 50,
+        pos.y + cos(rotate + (60 * DEG2RAD)) * 50
+    };
+
+    for (int i = 0; i < simple_cars.size(); i++)
+    {
+        Vector2 position = simple_cars[i].get_pos();
+        Vector2 dir = simple_cars[i].get_dir();
+        if (direction.y == 0)
+        {
+            if (CheckCollisionPointTriangle(position, pos, right_side, left_side)
+                && (abs(direction.x) != abs(dir.x)) && (abs(direction.y) != dir.y))
+            {
+                saw_obstacle = true;
+            }
+        }
+
+        if (CheckCollisionPointTriangle(position, pos, right_side_light, left_side_light) 
+            && (direction.x == dir.x && direction.y == dir.y))
+        {
+            saw_obstacle = true;
+        }
+    }
     
-    Run();
+    for (int i = 0; i < spec_cars.size(); i++)
+    {
+        Vector2 position = spec_cars[i].get_pos();
+        Vector2 dir = spec_cars[i].get_dir();
+        if (CheckCollisionPointTriangle(position, pos, right_side, left_side)
+            && (abs(direction.x) != abs(dir.x)) && (abs(direction.y) != dir.y))
+        {
+            saw_obstacle = true;
+        }
+
+        if (CheckCollisionPointTriangle(position, pos, right_side_light, left_side_light) 
+            && (direction.x == dir.x && direction.y == dir.y))
+        {
+            saw_obstacle = true;
+        }
+    }
+    
+
+    if (!saw_obstacle) Run(); 
 }
 
 void Special_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center)
 {
-    Run();
+    bool saw_obstacle = false;
+    float rotate = atan2(direction.x, direction.y);
+    Vector2 right_side_light = {
+        pos.x + sinf(rotate - (60 * DEG2RAD)) * 50,
+        pos.y + cos(rotate - (60 * DEG2RAD)) * 50
+    };
+    Vector2 left_side_light = {
+        pos.x + sinf(rotate + (60 * DEG2RAD)) * 50,
+        pos.y + cos(rotate + (60 * DEG2RAD)) * 50
+    };
+
+    for (int i = 0; i < spec_cars.size(); i++)
+    {
+        Vector2 position = spec_cars[i].get_pos();
+        Vector2 dir = spec_cars[i].get_dir();
+
+        if (CheckCollisionPointTriangle(position, pos, right_side_light, left_side_light) 
+            && (direction.x == dir.x && direction.y == dir.y))
+        {
+            saw_obstacle = true;
+        }
+    }
+
+    for (int i = 0; i < simple_cars.size(); i++)
+    {
+        Vector2 position = simple_cars[i].get_pos();
+        Vector2 dir = simple_cars[i].get_dir();
+
+        if (CheckCollisionPointTriangle(position, pos, right_side_light, left_side_light) 
+            && (direction.x == dir.x && direction.y == dir.y))
+        {
+            saw_obstacle = true;
+        }
+    }
+
+    if (!saw_obstacle) Run(); 
 }

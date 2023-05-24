@@ -15,11 +15,12 @@ private:
 public:
     Vector2 direction = {0, 0};
     Vector2 start;
+    Rectangle final;
     Rectangle skelet;
 
 public:
-    Road(Rectangle &rect,Vector2 &startpos);
-    Road(Rectangle &rect,Vector2 &startpos, Vector2 &dir);
-    Road(Rectangle &rect,Vector2 &startpos, Vector2 &dir, Mark& m);
+    Road(Rectangle &rect, Vector2 &startpos);
+    Road(Rectangle &rect, Vector2 &startpos, Rectangle &finalpos, Vector2 &dir);
+    Road(Rectangle &rect, Vector2 &startpos, Rectangle &finalpos, Vector2 &dir, Mark& m);
     void Draw();
 };

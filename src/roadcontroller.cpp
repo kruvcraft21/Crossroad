@@ -7,8 +7,11 @@ Road_Controller::Road_Controller() {
     // Draw mark
     Vector2 left_b = {0, 250},  left_e = {200, 250};
     Mark left_mark = {left_b, left_e};
+    // Direction
     Vector2 left_dir = {1, 0};
-    Road left(left_rect, left_pos, left_dir, left_mark);
+    // Final pos
+    Rectangle left_final_pos = {150, 250, 50, 50};
+    Road left(left_rect, left_pos, left_final_pos, left_dir, left_mark);
     road_collection.insert(make_pair("left", left));
 
     Rectangle up_rect = {200, 0, 100, 200};
@@ -16,7 +19,8 @@ Road_Controller::Road_Controller() {
     Vector2 up_b = {250, 0},    up_e = {250, 200};
     Mark up_mark = {up_b, up_e};
     Vector2 up_dir = {0, 1};
-    Road up(up_rect, up_pos, up_dir, up_mark);
+    Rectangle up_final_pos = {200, 150, 50, 50};
+    Road up(up_rect, up_pos, up_final_pos, up_dir, up_mark);
     road_collection.insert(make_pair("up", up));
 
     Rectangle botton_rect = {200, 300, 100, 200};
@@ -24,7 +28,8 @@ Road_Controller::Road_Controller() {
     Vector2 botton_b = {250, 300},  botton_e = {250, 500};
     Mark botton_mark = {botton_b, botton_e};
     Vector2 botton_dir = {0, -1};
-    Road botton(botton_rect, botton_pos, botton_dir, botton_mark);
+    Rectangle botton_final_pos = {250, 300, 50, 50};
+    Road botton(botton_rect, botton_pos, botton_final_pos, botton_dir, botton_mark);
     road_collection.insert(make_pair("button", botton));
 
     Rectangle right_rect = {300, 200, 200, 100};
@@ -32,7 +37,8 @@ Road_Controller::Road_Controller() {
     Vector2 right_b = {300, 250},   right_e = {500, 250};
     Mark right_mark = {right_b, right_e};
     Vector2 right_dir = {-1, 0};
-    Road right(right_rect, right_pos, right_dir, right_mark);
+    Rectangle right_final_pos = {300, 200, 50, 50};
+    Road right(right_rect, right_pos, right_final_pos, right_dir, right_mark);
     road_collection.insert(make_pair("right", right));
 
     Rectangle center_rect = {200, 200, 100, 100};
@@ -42,7 +48,7 @@ Road_Controller::Road_Controller() {
 }
 
 void Road_Controller::Start() {
-    Rectangle center = road_collection["center"].skelet;
+    Rectangle center = road_collection.find("center")->second.skelet;
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -91,7 +97,7 @@ void Road_Controller::AddCars()
         Vector2 mousepos = GetMousePosition();
         for (auto road = road_collection.begin(); road != road_collection.end(); road++) {
             if (road->first != "center" && CheckCollisionPointRec(mousepos, road->second.skelet)) {
-                Simple_Car car(road->second.direction, road->second.start);
+                Simple_Car car(road->second.direction, road->second.start, road->second.final);
                 AddSimpleCar(car);
             }
         }

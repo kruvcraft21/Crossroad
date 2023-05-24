@@ -1,5 +1,11 @@
 ﻿#include "road.h"
 
+Road::Road(Rectangle &rect, Vector2 &startpos) {
+    skelet = rect;
+    start = startpos;
+}
+
+
 Road::Road(Rectangle &rect, Vector2 &startpos, Vector2 &dir) {
     skelet = rect;
     start = startpos;

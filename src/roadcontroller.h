@@ -13,7 +13,7 @@ class Road_Controller{
 private:
     unique_ptr<Road> road_left = nullptr;
     unique_ptr<Road> road_up = nullptr;
-    unique_ptr<Road> road_button = nullptr;
+    unique_ptr<Road> road_botton = nullptr;
     unique_ptr<Road> road_right = nullptr;
     unique_ptr<Road> road_center = nullptr;
     vector<Car> cars;

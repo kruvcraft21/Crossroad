@@ -16,12 +16,13 @@ private:
     unique_ptr<Road> road_botton = nullptr;
     unique_ptr<Road> road_right = nullptr;
     unique_ptr<Road> road_center = nullptr;
-    vector<Car> cars;
+    vector<Simple_Car> simple_cars;
+    vector<Special_Car> spec_cars;
 
 public:
     Road_Controller();
     void Start();
     void AddCars();
-    void AddCar(Car &car);
+    void AddSimpleCar(Simple_Car &car);
     bool CheckCar(Vector2 &pos);
 };

@@ -50,11 +50,11 @@ void Road_Controller::Start() {
 
             AddCars();
 
-            for (int i = 0; i < cars.size(); i++) {
-                cars[i].Draw();
-                cars[i].Run(cars);
-                if (CheckCar(cars[i].pos)) {
-                    cars.erase(cars.begin() + i);
+            for (int i = 0; i < simple_cars.size(); i++) {
+                simple_cars[i].Draw();
+                simple_cars[i].Drive(simple_cars, spec_cars);
+                if (CheckCar(simple_cars[i].get_pos())) {
+                    simple_cars.erase(simple_cars.begin() + i);
                 }
             }
 
@@ -76,29 +76,29 @@ void Road_Controller::AddCars()
         Vector2 mousepos = GetMousePosition();
         if (CheckCollisionPointRec(mousepos, road_left->skelet))
         {
-            Car car(road_left->direction, road_left->start);
-            AddCar(car);
+            Simple_Car car(road_left->direction, road_left->start);
+            AddSimpleCar(car);
         }
         else if (CheckCollisionPointRec(mousepos, road_up->skelet))
         {
-            Car car(road_up->direction, road_up->start);
-            AddCar(car);
+            Simple_Car car(road_up->direction, road_up->start);
+            AddSimpleCar(car);
         }
         else if (CheckCollisionPointRec(mousepos, road_botton->skelet))
         {
-            Car car(road_botton->direction, road_botton->start);
-            AddCar(car);
+            Simple_Car car(road_botton->direction, road_botton->start);
+            AddSimpleCar(car);
         }
         else if (CheckCollisionPointRec(mousepos, road_right->skelet))
         {
-            Car car(road_right->direction, road_right->start);
-            AddCar(car);
+            Simple_Car car(road_right->direction, road_right->start);
+            AddSimpleCar(car);
         }
     }
 }
 
-void Road_Controller::AddCar(Car &car) {
-    if (cars.size() <= MAX_CAR) {
-        cars.push_back(car);
+void Road_Controller::AddSimpleCar(Simple_Car &car) {
+    if (simple_cars.size() <= MAX_CAR) {
+        simple_cars.push_back(car);
     }
 }

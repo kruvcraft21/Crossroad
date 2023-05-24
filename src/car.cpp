@@ -1,4 +1,4 @@
-#include "car.h"
+﻿#include "car.h"
 #include <math.h>
 
 Car::Car(Vector2 &dir, Vector2 &startpos) {
@@ -45,10 +45,11 @@ void Simple_Car::set_color() {
     }
 }
 
-void Car::Run(std::vector<Car> cars) {
-    pos.x += direction.x * 5;
-    pos.y += direction.y * 5;
+Simple_Car::Simple_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {
+    set_color();
+}
 
-    form.x += direction.x * 5;
-    form.y += direction.y * 5;
+void Simple_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars)
+{
+    Run();
 }

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "raylib.h"
+#include "road.h"
 #include <vector>
 
 class Special_Car;
@@ -29,7 +30,7 @@ private:
     void set_color();
 
 public:
-    void Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars);
+    void Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center);
     Simple_Car(Vector2 &dir, Vector2 &startpos);
 
 };
@@ -37,5 +38,6 @@ public:
 class Special_Car : public Car
 {
 public:
-    void Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars);
+    Special_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {}
+    void Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center);
 };

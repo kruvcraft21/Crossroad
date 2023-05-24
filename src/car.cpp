@@ -49,7 +49,13 @@ Simple_Car::Simple_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {
     set_color();
 }
 
-void Simple_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars)
+void Simple_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center)
+{
+    
+    Run();
+}
+
+void Special_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center)
 {
     Run();
 }

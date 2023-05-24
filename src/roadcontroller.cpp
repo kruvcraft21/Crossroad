@@ -1,4 +1,4 @@
-#include "roadcontroller.h"
+﻿#include "roadcontroller.h"
 
 Road_Controller::Road_Controller() {
     // Draw road
@@ -42,6 +42,7 @@ Road_Controller::Road_Controller() {
 }
 
 void Road_Controller::Start() {
+    Rectangle center = road_collection["center"].skelet;
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -56,9 +57,19 @@ void Road_Controller::Start() {
 
             for (int i = 0; i < simple_cars.size(); i++) {
                 simple_cars[i].Draw();
-                simple_cars[i].Drive(simple_cars, spec_cars);
+                simple_cars[i].Drive(simple_cars, spec_cars, center);
                 if (CheckCar(simple_cars[i].get_pos())) {
                     simple_cars.erase(simple_cars.begin() + i);
+                }
+            }
+
+            for (int i = 0; i < spec_cars.size(); i++)
+            {
+                spec_cars[i].Draw();
+                spec_cars[i].Drive(simple_cars, spec_cars, center);
+                if (CheckCar(spec_cars[i].get_pos()))
+                {
+                    spec_cars.erase(spec_cars.begin() + i);
                 }
             }
 
@@ -78,31 +89,35 @@ void Road_Controller::AddCars()
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
         Vector2 mousepos = GetMousePosition();
-        if (CheckCollisionPointRec(mousepos, road_left->skelet))
-        {
-            Simple_Car car(road_left->direction, road_left->start);
-            AddSimpleCar(car);
+        for (auto road = road_collection.begin(); road != road_collection.end(); road++) {
+            if (road->first != "center" && CheckCollisionPointRec(mousepos, road->second.skelet)) {
+                Simple_Car car(road->second.direction, road->second.start);
+                AddSimpleCar(car);
+            }
         }
-        else if (CheckCollisionPointRec(mousepos, road_up->skelet))
-        {
-            Simple_Car car(road_up->direction, road_up->start);
-            AddSimpleCar(car);
-        }
-        else if (CheckCollisionPointRec(mousepos, road_botton->skelet))
-        {
-            Simple_Car car(road_botton->direction, road_botton->start);
-            AddSimpleCar(car);
-        }
-        else if (CheckCollisionPointRec(mousepos, road_right->skelet))
-        {
-            Simple_Car car(road_right->direction, road_right->start);
-            AddSimpleCar(car);
+    }
+    else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) 
+    {
+        Vector2 mousepos = GetMousePosition();
+        for (auto road = road_collection.begin(); road != road_collection.end(); road++) {
+            if (road->first != "center" && CheckCollisionPointRec(mousepos, road->second.skelet)) {
+                Special_Car car(road->second.direction, road->second.start);
+                AddSpecCar(car);
+            }
         }
     }
 }
 
 void Road_Controller::AddSimpleCar(Simple_Car &car) {
-    if (simple_cars.size() <= MAX_CAR) {
+    if (simple_cars.size() < MAX_CAR) {
         simple_cars.push_back(car);
+    }
+}
+
+void Road_Controller::AddSpecCar(Special_Car &car)
+{
+    if (spec_cars.size() < MAX_SPEC_CAR)
+    {
+        spec_cars.push_back(car);
     }
 }

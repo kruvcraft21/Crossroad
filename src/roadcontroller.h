@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "road.h"
 #include "car.h"
@@ -10,6 +10,7 @@
 using namespace std;
 
 constexpr int MAX_CAR = 10;
+constexpr int MAX_SPEC_CAR = 3;
 
 class Road_Controller{
 private:
@@ -22,5 +23,6 @@ public:
     void Start();
     void AddCars();
     void AddSimpleCar(Simple_Car &car);
+    void AddSpecCar(Special_Car &car);
     bool CheckCar(Vector2 &pos);
 };

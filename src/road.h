@@ -10,12 +10,15 @@ typedef struct Mark {
 class Road {
 private:
     Rectangle skelet;
-    Vector2 start;
     Mark mark;
     bool isMarking;
+    
+public:
+    Vector2 direction;
+    Vector2 start;
 
 public:
-    Road(Rectangle &rect,Vector2 &startpos);
-    Road(Rectangle &rect,Vector2 &startpos, Mark& m);
+    Road(Rectangle &rect,Vector2 &startpos, Vector2 &dir);
+    Road(Rectangle &rect,Vector2 &startpos, Vector2 &dir, Mark& m);
     void Draw();
 };

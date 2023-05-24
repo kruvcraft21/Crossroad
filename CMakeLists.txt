@@ -7,7 +7,9 @@ add_executable(Crossroad src/main.cpp
                         src/road.h
                         src/road.cpp
                         src/roadcontroller.h
-                        src/roadcontroller.cpp)
+                        src/roadcontroller.cpp
+                        src/car.h
+                        src/car.cpp)
 
 target_link_libraries(Crossroad PUBLIC raylib)
 

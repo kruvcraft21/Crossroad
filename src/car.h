@@ -1,17 +1,20 @@
-﻿#pragma once
+#pragma once
 
 #include "raylib.h"
 #include <vector>
 
 class Car
 {
-private:
+protected:
     Vector2 direction;
-    Rectangle form;
+    float radiusH = 5;
+    float radiusV = 5;
+    int speed = 2;
+    Vector2 pos;
+    Color color = BLACK;
 
 public:
-    Vector2 pos;
-    Car(Vector2 dir, Vector2 startpos);
+    Car(Vector2 &dir, Vector2 &startpos);
     void Draw();
     void Run(std::vector<Car> cars);
 };

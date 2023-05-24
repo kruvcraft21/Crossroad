@@ -1,13 +1,48 @@
-﻿#include "car.h"
+#include "car.h"
+#include <math.h>
 
-Car::Car(Vector2 dir, Vector2 startpos) {
+Car::Car(Vector2 &dir, Vector2 &startpos) {
     direction = dir;
     pos = startpos;
-    form = {pos.x - 10, pos.y - 5, 20, 10};
+    radiusH = abs(direction.x * 10);
+    radiusV = abs(direction.y * 10);
+    if (radiusH < 1) radiusH = 5;
+    if (radiusV < 1) radiusV = 5;
 }
 
 void Car::Draw() {
-    DrawRectangleRounded(form, 5.0f, 6, RED);
+    DrawEllipse(static_cast<int>(pos.x), static_cast<int>(pos.y), radiusH, radiusV, color);
+    DrawEllipseLines(static_cast<int>(pos.x), static_cast<int>(pos.y), radiusH, radiusV, BLACK);
+}
+
+Vector2 Car::get_pos() {
+    return pos;
+}
+
+void Car::Run() {
+    int speed = 2;
+    pos.x += direction.x * speed;
+    pos.y += direction.y * speed;
+}
+
+void Simple_Car::set_color() {
+    int c = GetRandomValue(1, 3);
+    switch (c)
+    {
+    case 1:
+        color = RED;
+        break;
+    case 2:
+        color = GREEN;
+        break;
+    case 3:
+        color = ORANGE;
+        break;
+    
+    default:
+        color = BLACK;
+        break;
+    }
 }
 
 void Car::Run(std::vector<Car> cars) {

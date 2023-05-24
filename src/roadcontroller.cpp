@@ -14,14 +14,14 @@ Road_Controller::Road_Controller() {
     Vector2 up_pos = {225, 25};
     Vector2 up_b = {250, 0},    up_e = {250, 200};
     Mark up_mark = {up_b, up_e};
-    Vector2 up_dir = {0, -1};
+    Vector2 up_dir = {0, 1};
     road_up = make_unique<Road>(up_rect, up_pos, up_dir, up_mark);
 
     Rectangle botton_rect = {200, 300, 100, 200};
     Vector2 botton_pos = {275, 475};
     Vector2 botton_b = {250, 300},  botton_e = {250, 500};
     Mark botton_mark = {botton_b, botton_e};
-    Vector2 botton_dir = {0, 1};
+    Vector2 botton_dir = {0, -1};
     road_botton = make_unique<Road>(botton_rect, botton_pos, botton_dir, botton_mark);
 
     Rectangle right_rect = {300, 200, 200, 100};
@@ -52,11 +52,21 @@ void Road_Controller::Start() {
 
             for (int i = 0; i < cars.size(); i++) {
                 cars[i].Draw();
+                cars[i].Run(cars);
+                if (CheckCar(cars[i].pos)) {
+                    cars.erase(cars.begin() + i);
+                }
             }
 
             DrawFPS(10, 10);
         EndDrawing();
     }
+}
+
+bool Road_Controller::CheckCar(Vector2 &pos) {
+    bool a = pos.x > 500 || pos.x < 0;
+    bool b = pos.y > 500 || pos.y < 0;
+    return a || b;
 }
 
 void Road_Controller::AddCars()

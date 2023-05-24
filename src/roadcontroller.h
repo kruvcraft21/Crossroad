@@ -23,4 +23,5 @@ public:
     void Start();
     void AddCars();
     void AddCar(Car &car);
+    bool CheckCar(Vector2 &pos);
 };

@@ -48,25 +48,7 @@ void Road_Controller::Start() {
             road_right->Draw();
             road_center->Draw();
 
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-                Vector2 mousepos = GetMousePosition();
-                if (CheckCollisionPointRec(mousepos, road_left->skelet)) {
-                    Car car(road_left->direction, road_left->start);
-                    cars.push_back(car);
-                }
-                else if (CheckCollisionPointRec(mousepos, road_up->skelet)) {
-                    Car car(road_up->direction, road_up->start);
-                    cars.push_back(car);
-                }
-                else if (CheckCollisionPointRec(mousepos, road_botton->skelet)) {
-                    Car car(road_botton->direction, road_botton->start);
-                    cars.push_back(car);
-                }
-                else if (CheckCollisionPointRec(mousepos, road_right->skelet)) {
-                    Car car(road_right->direction, road_right->start);
-                    cars.push_back(car);
-                }
-            }
+            AddCars();
 
             for (int i = 0; i < cars.size(); i++) {
                 cars[i].Draw();
@@ -75,5 +57,38 @@ void Road_Controller::Start() {
             DrawFPS(10, 10);
         EndDrawing();
     }
-    
+}
+
+void Road_Controller::AddCars()
+{
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        Vector2 mousepos = GetMousePosition();
+        if (CheckCollisionPointRec(mousepos, road_left->skelet))
+        {
+            Car car(road_left->direction, road_left->start);
+            AddCar(car);
+        }
+        else if (CheckCollisionPointRec(mousepos, road_up->skelet))
+        {
+            Car car(road_up->direction, road_up->start);
+            AddCar(car);
+        }
+        else if (CheckCollisionPointRec(mousepos, road_botton->skelet))
+        {
+            Car car(road_botton->direction, road_botton->start);
+            AddCar(car);
+        }
+        else if (CheckCollisionPointRec(mousepos, road_right->skelet))
+        {
+            Car car(road_right->direction, road_right->start);
+            AddCar(car);
+        }
+    }
+}
+
+void Road_Controller::AddCar(Car &car) {
+    if (cars.size() <= MAX_CAR) {
+        cars.push_back(car);
+    }
 }

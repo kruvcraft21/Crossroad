@@ -21,4 +21,6 @@ private:
 public:
     Road_Controller();
     void Start();
+    void AddCars();
+    void AddCar(Car &car);
 };

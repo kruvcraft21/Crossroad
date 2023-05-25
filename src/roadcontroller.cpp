@@ -45,6 +45,11 @@ Road_Controller::Road_Controller() {
     Vector2 center_pos = {0, 0};
     Road center(center_rect, center_pos);
     road_collection.insert(make_pair("center", center));
+
+    traffic_signs.insert(make_pair("glavnaya", Traffic_sign("resources/glavnaya.png", {150, 150})));
+    traffic_signs.insert(make_pair("glavnaya2", Traffic_sign("resources/glavnaya.png", {300, 300})));
+    traffic_signs.insert(make_pair("neglavnaya2", Traffic_sign("resources/neglavnaya2.png", {150, 300})));
+    traffic_signs.insert(make_pair("neglavnaya3", Traffic_sign("resources/neglavnaya3.png", {300, 150})));
 }
 
 void Road_Controller::Start() {
@@ -58,6 +63,11 @@ void Road_Controller::Start() {
             {
                 road->second.Draw();
             } 
+
+            for (auto traffic_sign = traffic_signs.begin(); traffic_sign != traffic_signs.end(); traffic_sign++)
+            {
+                traffic_sign->second.Draw();
+            }
 
             AddCars();
 
@@ -79,8 +89,6 @@ void Road_Controller::Start() {
                     spec_cars.erase(spec_cars.begin() + i);
                 }
             }
-
-            DrawFPS(10, 10);
         EndDrawing();
     }
 }

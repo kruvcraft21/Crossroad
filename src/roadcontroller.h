@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "road.h"
 #include "car.h"
+#include "traffic_sign.h"
 #include <memory>
 #include <vector>
 #include <map>
@@ -17,6 +18,7 @@ private:
     map<string, Road> road_collection;
     vector<Simple_Car> simple_cars;
     vector<Special_Car> spec_cars;
+    map<string, Traffic_sign> traffic_signs;
 
 public:
     Road_Controller();
@@ -28,7 +30,7 @@ public:
     vector<Simple_Car> get_simple_cars() {return simple_cars;}
     vector<Special_Car> get_spec_cars() {return spec_cars;}
     static Road_Controller& getInstance() {
-        static Road_Controller instance;
+        static Road_Controller  instance;
         return instance;
     }    
 };

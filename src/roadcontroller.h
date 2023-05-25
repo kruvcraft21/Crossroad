@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include "road.h"
 #include "car.h"
 #include <memory>
@@ -14,6 +13,7 @@ constexpr int MAX_SPEC_CAR = 3;
 
 class Road_Controller{
 private:
+    static Road_Controller* p_instance;
     map<string, Road> road_collection;
     vector<Simple_Car> simple_cars;
     vector<Special_Car> spec_cars;
@@ -25,4 +25,10 @@ public:
     void AddSimpleCar(Simple_Car &car);
     void AddSpecCar(Special_Car &car);
     bool CheckCar(Vector2 &pos);
+    vector<Simple_Car> get_simple_cars() {return simple_cars;}
+    vector<Special_Car> get_spec_cars() {return spec_cars;}
+    static Road_Controller& getInstance() {
+        static Road_Controller instance;
+        return instance;
+    }    
 };

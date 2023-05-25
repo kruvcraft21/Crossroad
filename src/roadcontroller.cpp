@@ -63,8 +63,9 @@ void Road_Controller::Start() {
 
             for (int i = 0; i < simple_cars.size(); i++) {
                 simple_cars[i].Draw();
-                simple_cars[i].Drive(simple_cars, spec_cars, center);
-                if (CheckCar(simple_cars[i].get_pos())) {
+                simple_cars[i].Drive();
+                if (CheckCar(simple_cars[i].get_pos())) 
+                {
                     simple_cars.erase(simple_cars.begin() + i);
                 }
             }
@@ -72,7 +73,7 @@ void Road_Controller::Start() {
             for (int i = 0; i < spec_cars.size(); i++)
             {
                 spec_cars[i].Draw();
-                spec_cars[i].Drive(simple_cars, spec_cars, center);
+                spec_cars[i].Drive();
                 if (CheckCar(spec_cars[i].get_pos()))
                 {
                     spec_cars.erase(spec_cars.begin() + i);

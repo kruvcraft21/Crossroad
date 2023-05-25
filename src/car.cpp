@@ -1,7 +1,6 @@
 ﻿#include "car.h"
 #include <math.h>
-#include <iostream>
-
+#include "roadcontroller.h"
 
 Car::Car(Vector2 &dir, Vector2 &startpos) {
     direction = dir;
@@ -51,30 +50,33 @@ Simple_Car::Simple_Car(Vector2 &dir, Vector2 &startpos, Rectangle &finalpos) : C
     final = finalpos;
 }
 
-void Simple_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center)
+void Simple_Car::Drive()
 {
+    auto controller = Road_Controller::getInstance();
+    std::vector<Special_Car> spec_cars = controller.get_spec_cars();
+    std::vector<Simple_Car> simple_cars = controller.get_simple_cars(); 
     bool saw_obstacle = false;
-    float rotate = atan2(direction.x, direction.y);
+    float rotate = atan2f(direction.x, direction.y);
     Vector2 up_side = {
         pos.x + sinf(rotate) * 100,
-        pos.y + cos(rotate) * 100
+        pos.y + cosf(rotate) * 100
     };
     Vector2 right_side = {
         pos.x + sinf(rotate - (60 * DEG2RAD)) * 110,
-        pos.y + cos(rotate - (60 * DEG2RAD)) * 110
+        pos.y + cosf(rotate - (60 * DEG2RAD)) * 110
     };
     Vector2 left_side = {
         pos.x + sinf(rotate + (60 * DEG2RAD)) * 110,
-        pos.y + cos(rotate + (60 * DEG2RAD)) * 110
+        pos.y + cosf(rotate + (60 * DEG2RAD)) * 110
     };
 
     Vector2 right_side_light = {
         pos.x + sinf(rotate - (60 * DEG2RAD)) * 50,
-        pos.y + cos(rotate - (60 * DEG2RAD)) * 50
+        pos.y + cosf(rotate - (60 * DEG2RAD)) * 50
     };
     Vector2 left_side_light = {
         pos.x + sinf(rotate + (60 * DEG2RAD)) * 50,
-        pos.y + cos(rotate + (60 * DEG2RAD)) * 50
+        pos.y + cosf(rotate + (60 * DEG2RAD)) * 50
     };
 
     for (int i = 0; i < simple_cars.size(); i++)
@@ -118,17 +120,21 @@ void Simple_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_
     if (!saw_obstacle) Run(); 
 }
 
-void Special_Car::Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center)
+void Special_Car::Drive()
 {
+    Road_Controller controller = Road_Controller::getInstance();
+    std::vector<Special_Car> spec_cars = controller.get_spec_cars();
+    std::vector<Simple_Car> simple_cars = controller.get_simple_cars(); 
+
     bool saw_obstacle = false;
-    float rotate = atan2(direction.x, direction.y);
+    float rotate = atan2f(direction.x, direction.y);
     Vector2 right_side_light = {
         pos.x + sinf(rotate - (60 * DEG2RAD)) * 50,
-        pos.y + cos(rotate - (60 * DEG2RAD)) * 50
+        pos.y + cosf(rotate - (60 * DEG2RAD)) * 50
     };
     Vector2 left_side_light = {
         pos.x + sinf(rotate + (60 * DEG2RAD)) * 50,
-        pos.y + cos(rotate + (60 * DEG2RAD)) * 50
+        pos.y + cosf(rotate + (60 * DEG2RAD)) * 50
     };
 
     for (int i = 0; i < spec_cars.size(); i++)

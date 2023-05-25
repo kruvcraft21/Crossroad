@@ -32,7 +32,7 @@ private:
     void set_color();
 
 public:
-    void Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center);
+    void Drive();
     Simple_Car(Vector2 &dir, Vector2 &startpos, Rectangle &finalpos);
 
 };
@@ -41,5 +41,5 @@ class Special_Car : public Car
 {
 public:
     Special_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {}
-    void Drive(std::vector<Simple_Car> simple_cars, std::vector<Special_Car> spec_cars, Rectangle &center);
+    void Drive();
 };

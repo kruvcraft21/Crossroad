@@ -5,7 +5,6 @@
 int main(void) {
     InitWindow(500, 500, "Crossroad");
     SetTargetFPS(60);
-    Road_Controller road_controller;
-    road_controller.Start();
+    Road_Controller::getInstance().Start();
     return 0;
 }

@@ -11,9 +11,9 @@ using namespace std;
 constexpr int MAX_CAR = 10;
 constexpr int MAX_SPEC_CAR = 3;
 
-class Road_Controller{
+class Road_Controller
+{
 private:
-    static Road_Controller* p_instance;
     map<string, Road> road_collection;
     vector<Simple_Car> simple_cars;
     vector<Special_Car> spec_cars;

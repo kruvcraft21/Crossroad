@@ -7,39 +7,40 @@
 class Special_Car;
 class Simple_Car;
 
-class Car
+// Класс, представляющий машину
+class Car 
 {
 protected:
-    Vector2 direction;
-    float radiusH = 5;
-    float radiusV = 5;
-    int speed = 2;
-    Vector2 pos;
-    Color color = BLACK;
+    Vector2 direction; // направление движения
+    float radiusH = 5; // горизонтальный радиус
+    float radiusV = 5; // вертикальный радиус
+    int speed = 2; // скорость
+    Vector2 pos; // позиция
+    Color color = BLACK; // цвет
 
 public:
-    Car(Vector2 &dir, Vector2 &startpos);
-    void Draw();
-    void Run();
-    Vector2 get_pos();
-    Vector2 get_dir() { return direction;};
+    Car(Vector2& dir, Vector2& startpos); // конструктор
+    void Draw(); // метод для отрисовки машины
+    void Run(); // метод для движения машины
+    Vector2 get_pos(); // метод для получения позиции машины
+    Vector2 get_dir() { return direction; }; // метод для получения направления движения машины
 };
 
+// Класс, наследующий от класса Car и представляющий простую машину
 class Simple_Car : public Car 
 {
 private:
-    Rectangle final;
-    void set_color();
+    void set_color(); // Метод устанавливает случайный цвет для автомобиля
 
 public:
-    void Drive();
-    Simple_Car(Vector2 &dir, Vector2 &startpos, Rectangle &finalpos);
-
+    void Drive(); // метод для движения простой машины
+    Simple_Car(Vector2& dir, Vector2& startpos); // конструктор простой машины
 };
 
+// Класс, наследующий от класса Car и представляющий специальную машину
 class Special_Car : public Car
 {
 public:
-    Special_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {}
-    void Drive();
+    Special_Car(Vector2& dir, Vector2& startpos) : Car(dir, startpos) {} // конструктор специальной машины
+    void Drive(); // метод для движения специальной машины
 };

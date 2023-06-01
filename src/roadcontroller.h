@@ -20,7 +20,7 @@ private:
     map<string, Road> road_collection; // Коллекция объектов дорог
     vector<Simple_Car> simple_cars; // Массив простых машин
     vector<Special_Car> spec_cars; // Массив специальных машин
-    map<string, Traffic_sign> traffic_signs; // Коллекция знаков дорожного движения
+    vector<Traffic_sign> traffic_signs; // Коллекция знаков дорожного движения
 
 public:
     // Конструкторы и методы для управления дорогой и машинами на ней

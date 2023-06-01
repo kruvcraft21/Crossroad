@@ -25,3 +25,9 @@ void Road::Draw() {
         DrawLineV(mark.begin_pos, mark.end_pos, WHITE); // Отрисовываем разметку
     }
 }
+
+// Метод для проверки пересечения с позицей
+bool Road::CheckCollisionPosition(Vector2& pos)
+{
+    return CheckCollisionPointRec(pos, skelet);
+}

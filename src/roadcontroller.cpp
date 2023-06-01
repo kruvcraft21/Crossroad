@@ -48,15 +48,14 @@ Road_Controller::Road_Controller() {
     road_collection.insert(make_pair("center", center));
 
     // Создаем знаки дорожного движения
-    traffic_signs.insert(make_pair("glavnaya", Traffic_sign("resources/glavnaya.png", {150, 150})));
-    traffic_signs.insert(make_pair("glavnaya2", Traffic_sign("resources/glavnaya.png", {300, 300})));
-    traffic_signs.insert(make_pair("neglavnaya2", Traffic_sign("resources/neglavnaya3.png", {150, 300})));
-    traffic_signs.insert(make_pair("neglavnaya3", Traffic_sign("resources/neglavnaya2.png", {300, 150})));
+    traffic_signs.push_back(Traffic_sign("resources/glavnaya.png", {150, 150}));
+    traffic_signs.push_back(Traffic_sign("resources/glavnaya.png", {300, 300}));
+    traffic_signs.push_back(Traffic_sign("resources/neglavnaya3.png", {150, 300}));
+    traffic_signs.push_back(Traffic_sign("resources/neglavnaya2.png", {300, 150}));
 }
 
 // Метод Start запускает окно
 void Road_Controller::Start() {
-    Rectangle center = road_collection.find("center")->second.skelet;
     while (!WindowShouldClose())
     {
         BeginDrawing();
@@ -71,7 +70,7 @@ void Road_Controller::Start() {
             // Отрисовываем все знаки дорожного движения
             for (auto traffic_sign = traffic_signs.begin(); traffic_sign != traffic_signs.end(); traffic_sign++)
             {
-                traffic_sign->second.Draw();
+                traffic_sign->Draw();
             }
 
             // Добавляем новые машины на дорогу
@@ -117,8 +116,8 @@ void Road_Controller::AddCars()
         // Проходим по каждой дороге в коллекции
         for (auto road = road_collection.begin(); road != road_collection.end(); road++) {
             // Если мышь находится на дороге, кроме центральной, создаем новую простую машину и добавляем ее на дорогу
-            if (road->first != "center" && CheckCollisionPointRec(mousepos, road->second.skelet)) {
-                Simple_Car car(road->second.direction, road->second.start);
+            if (road->first != "center" && road->second.CheckCollisionPosition(mousepos)) {
+                Simple_Car car(road->second.get_direction(), road->second.get_start_pos_car());
                 AddSimpleCar(car);
             }
         }
@@ -130,8 +129,8 @@ void Road_Controller::AddCars()
         // Проходим по каждой дороге в коллекции
         for (auto road = road_collection.begin(); road != road_collection.end(); road++) {
             // Если мышь находится на дороге, кроме центральной, создаем новую специальную машину и добавляем ее на дорогу
-            if (road->first != "center" && CheckCollisionPointRec(mousepos, road->second.skelet)) {
-                Special_Car car(road->second.direction, road->second.start);
+            if (road->first != "center" && road->second.CheckCollisionPosition(mousepos)) {
+                Special_Car car(road->second.get_direction(), road->second.get_start_pos_car());
                 AddSpecCar(car);
             }
         }

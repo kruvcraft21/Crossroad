@@ -3,6 +3,13 @@
 #include "raylib.h"
 #include "road.h"
 #include <vector>
+#include <map>
+#include <string>
+#include <array>
+
+// Вычисление необходимых констант при компиляции
+constexpr float DEGTORAD60 = 60 * DEG2RAD;
+constexpr float DEGTORAD45 = 45 * DEG2RAD;
 
 class Special_Car;
 class Simple_Car;
@@ -17,6 +24,7 @@ protected:
     int speed = 2; // скорость
     Vector2 pos; // позиция
     Color color = BLACK; // цвет
+    std::map<std::string, std::array<Vector2, 3>> overview_car;
 
 public:
     Car(Vector2& dir, Vector2& startpos); // конструктор
@@ -41,6 +49,6 @@ public:
 class Special_Car : public Car
 {
 public:
-    Special_Car(Vector2& dir, Vector2& startpos) : Car(dir, startpos) {} // конструктор специальной машины
+    Special_Car(Vector2& dir, Vector2& startpos); // конструктор специальной машины
     void Drive(); // метод для движения специальной машины
 };

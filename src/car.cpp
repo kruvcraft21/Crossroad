@@ -27,8 +27,23 @@ Vector2 Car::get_pos() {
 
 // Метод для движения машины, обновляет позицию автомобиля в соответствии с его направлением и скоростью
 void Car::Run() {
-    pos.x += direction.x * speed;
-    pos.y += direction.y * speed;
+    // Вычисляем разницу в координатах
+    auto delta_x = direction.x * speed;
+    auto delta_y = direction.y * speed;
+
+    // Получаем новую позицию машины
+    pos.x += delta_x;
+    pos.y += delta_y;
+
+    // Сдвигаем треугольники обзора на разницу
+    for (auto &triangle : overview_car)
+    {
+        for (auto &point : triangle.second)
+        {
+            point.x += delta_x;
+            point.y += delta_y;
+        }
+    }
 }
 
 // Метод устанавливает случайный цвет для автомобиля
@@ -55,6 +70,39 @@ void Simple_Car::set_color() {
 // Конструктор Simple_Car вызывает конструктор Car и затем устанавливает случайный цвет для автомобиля
 Simple_Car::Simple_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {
     set_color();
+
+    // Вычисляем угол поворота автомобиля
+    float rotate = atan2f(direction.x, direction.y);
+
+    // Вычисляем треугольник обзора для центра перекрёстка
+    std::array<Vector2, 3> center_triangle = {
+        startpos,
+        {
+            startpos.x + sinf(rotate - (DEGTORAD60)) * 110,
+            startpos.y + cosf(rotate - (DEGTORAD60)) * 110
+        },
+        {
+            startpos.x + sinf(rotate + (DEGTORAD60)) * 110,
+            startpos.y + cosf(rotate + (DEGTORAD60)) * 110
+        }
+    };
+
+    // Вычисляем треугольник обзора для проверки перед машиной
+    std::array<Vector2, 3> front_triangle = {
+        startpos,
+        {
+            startpos.x + sinf(rotate - (DEGTORAD45)) * 50,
+            startpos.y + cosf(rotate - (DEGTORAD45)) * 50
+        },
+        {
+            startpos.x + sinf(rotate + (DEGTORAD45)) * 50,
+            startpos.y + cosf(rotate + (DEGTORAD45)) * 50
+        }
+    };
+
+    // Добавляем треугольники в контейнер
+    overview_car.insert({"center_triangle", center_triangle});
+    overview_car.insert({"front_triangle", front_triangle});
 }
 
 // Метод для движения простой машины
@@ -62,46 +110,27 @@ void Simple_Car::Drive()
 {
     // Получаем экземпляр класса Road_Controller и векторы специальных и простых автомобилей
     auto controller = Road_Controller::getInstance();
-    std::vector<Special_Car> spec_cars = controller.get_spec_cars();
-    std::vector<Simple_Car> simple_cars = controller.get_simple_cars(); 
+    std::vector<Special_Car>& spec_cars = controller.get_spec_cars();
+    std::vector<Simple_Car>& simple_cars = controller.get_simple_cars(); 
 
     // Флаг, который показывает, была ли обнаружена препятствие на пути автомобиля
     bool saw_obstacle = false;
 
-    // Вычисляем угол поворота автомобиля
-    float rotate = atan2f(direction.x, direction.y);
-
-    // Вычисляем координаты вершин треугольника, определенного позицией и углом поворота автомобиля
-    Vector2 right_side = {
-        pos.x + sinf(rotate - (60 * DEG2RAD)) * 110,
-        pos.y + cosf(rotate - (60 * DEG2RAD)) * 110
-    };
-    Vector2 left_side = {
-        pos.x + sinf(rotate + (60 * DEG2RAD)) * 110,
-        pos.y + cosf(rotate + (60 * DEG2RAD)) * 110
-    };
-
-    // Вычисляем координаты вершин треугольника, определенного позицией и углом поворота автомобиля
-    Vector2 right_side_light = {
-        pos.x + sinf(rotate - (45 * DEG2RAD)) * 50,
-        pos.y + cosf(rotate - (45 * DEG2RAD)) * 50
-    };
-    Vector2 left_side_light = {
-        pos.x + sinf(rotate + (45 * DEG2RAD)) * 50,
-        pos.y + cosf(rotate + (45 * DEG2RAD)) * 50
-    };
+    // Получаем треугольники обзора
+    auto center_triangle = overview_car["center_triangle"];
+    auto front_triangle = overview_car["front_triangle"];
 
     // Проверяем, есть ли препятствие на пути автомобиля среди простых автомобилей
-    for (int i = 0; i < simple_cars.size(); i++)
+    for (auto &car : simple_cars)
     {
-        Vector2 position = simple_cars[i].get_pos();
-        Vector2 dir = simple_cars[i].get_dir();
+        Vector2 position = car.get_pos();
+        Vector2 dir = car.get_dir();
 
         // Если направления движения не совпадают по горизонтали, то проверяем треугольник
         if (direction.y == 0)
         {
             // Уступаем автомобилям на главной дороге
-            if (CheckCollisionPointTriangle(position, pos, right_side, left_side)
+            if (CheckCollisionPointTriangle(position, center_triangle[0], center_triangle[1], center_triangle[2])
                 && (abs(direction.x) != abs(dir.x)) && (abs(direction.y) != dir.y))
             {
                 saw_obstacle = true;
@@ -109,21 +138,21 @@ void Simple_Car::Drive()
         }
 
         // Проверяем наличие машин спереди, чтобы не было столкновения
-        if (CheckCollisionPointTriangle(position, pos, right_side_light, left_side_light))
+        if (CheckCollisionPointTriangle(position, front_triangle[0], front_triangle[1], front_triangle[2]))
         {
             saw_obstacle = true;
         }
     }
     
     // Проверяем, есть ли препятствие на пути автомобиля среди специальных автомобилей
-    for (int i = 0; i < spec_cars.size(); i++)
+    for (auto &car : spec_cars)
     {
-        Vector2 position = spec_cars[i].get_pos();
-        Vector2 dir = spec_cars[i].get_dir();
+        Vector2 position = car.get_pos();
+        Vector2 dir = car.get_dir();
         // Уступаем Спец транспорту и проверяем наличие машин спереди, чтобы не было столкновения
-        if ((CheckCollisionPointTriangle(position, pos, right_side, left_side)
+        if ((CheckCollisionPointTriangle(position, center_triangle[0], center_triangle[1], center_triangle[2])
             && (abs(direction.x) != abs(dir.x)) && (abs(direction.y) != dir.y))
-            || CheckCollisionPointTriangle(position, pos, right_side_light, left_side_light))
+            || CheckCollisionPointTriangle(position, front_triangle[0], front_triangle[1], front_triangle[2]))
         {
             saw_obstacle = true;
         }
@@ -131,6 +160,28 @@ void Simple_Car::Drive()
 
     // Если препятствий нет, то меняем позицию автомобиля
     if (!saw_obstacle) Run(); 
+}
+
+Special_Car::Special_Car(Vector2& dir, Vector2& startpos) : Car(dir, startpos)
+{
+    // Вычисляем угол поворота автомобиля
+    float rotate = atan2f(direction.x, direction.y);
+
+    // Вычисляем треугольник обзора для проверки перед машиной
+    std::array<Vector2, 3> front_triangle = {
+        startpos,
+        {
+            startpos.x + sinf(rotate - (DEGTORAD45)) * 50,
+            startpos.y + cosf(rotate - (DEGTORAD45)) * 50
+        },
+        {
+            startpos.x + sinf(rotate + (DEGTORAD45)) * 50,
+            startpos.y + cosf(rotate + (DEGTORAD45)) * 50
+        }
+    };
+
+    // Добавляем треугольник в контейнер
+    overview_car.insert(make_pair("front_triangle", front_triangle));
 }
 
 // Метод для движения специальной машины
@@ -144,40 +195,30 @@ void Special_Car::Drive()
     // Флаг, который показывает, была ли обнаружена препятствие на пути автомобиля
     bool saw_obstacle = false;
 
-    // Вычисляем угол поворота автомобиля
-    float rotate = atan2f(direction.x, direction.y);
-
-    // Определяем координаты вершин треугольника специального автомобиля
-    Vector2 right_side_light = {
-        pos.x + sinf(rotate - (45 * DEG2RAD)) * 50,
-        pos.y + cosf(rotate - (45 * DEG2RAD)) * 50
-    };
-    Vector2 left_side_light = {
-        pos.x + sinf(rotate + (45 * DEG2RAD)) * 50,
-        pos.y + cosf(rotate + (45 * DEG2RAD)) * 50
-    };
+    // Получаем треугольник обзора
+    auto front_triangle = overview_car["front_triangle"];
 
     // Проходим по списку специальных автомобилей и проверяем наличие препятствия
-    for (int i = 0; i < spec_cars.size(); i++)
+    for (auto &car : spec_cars)
     {
-        Vector2 position = spec_cars[i].get_pos();
-        Vector2 dir = spec_cars[i].get_dir();
+        Vector2 position = car.get_pos();
+        Vector2 dir = car.get_dir();
 
         // Проверяем наличие машин спереди, чтобы не было столкновения
-        if (CheckCollisionPointTriangle(position, pos, right_side_light, left_side_light))
+        if (CheckCollisionPointTriangle(position, front_triangle[0], front_triangle[1], front_triangle[2]))
         {
             saw_obstacle = true;
         }
     }
 
     // Проходим по списку простых автомобилей и проверяем наличие препятствия
-    for (int i = 0; i < simple_cars.size(); i++)
+    for (auto &car : simple_cars)
     {
-        Vector2 position = simple_cars[i].get_pos();
-        Vector2 dir = simple_cars[i].get_dir();
+        Vector2 position = car.get_pos();
+        Vector2 dir = car.get_dir();
 
         // Проверяем наличие машин спереди, чтобы не было столкновения
-        if (CheckCollisionPointTriangle(position, pos, right_side_light, left_side_light))
+        if (CheckCollisionPointTriangle(position, front_triangle[0], front_triangle[1], front_triangle[2]))
         {
             saw_obstacle = true;
         }

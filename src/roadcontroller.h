@@ -30,8 +30,8 @@ public:
     void AddSimpleCar(Simple_Car &car);
     void AddSpecCar(Special_Car &car);
     bool CheckCar(Vector2 &pos);
-    vector<Simple_Car> get_simple_cars() { return simple_cars; } // Геттер для простых машин
-    vector<Special_Car> get_spec_cars() { return spec_cars; } // Геттер для специальных машин
+    vector<Simple_Car>& get_simple_cars() { return simple_cars; } // Геттер для простых машин
+    vector<Special_Car>& get_spec_cars() { return spec_cars; } // Геттер для специальных машин
     // Метод для создания и получения единственного экземпляра контроллера
     static Road_Controller& getInstance() {
         static Road_Controller instance;

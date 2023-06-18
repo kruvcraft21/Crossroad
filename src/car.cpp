@@ -78,12 +78,12 @@ Simple_Car::Simple_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {
     std::array<Vector2, 3> center_triangle = {
         startpos,
         {
-            startpos.x + sinf(rotate - (DEGTORAD60)) * 110,
-            startpos.y + cosf(rotate - (DEGTORAD60)) * 110
+            startpos.x + sinf(rotate - (DEGTORAD50)) * 110,
+            startpos.y + cosf(rotate - (DEGTORAD50)) * 110
         },
         {
-            startpos.x + sinf(rotate + (DEGTORAD60)) * 110,
-            startpos.y + cosf(rotate + (DEGTORAD60)) * 110
+            startpos.x + sinf(rotate + (DEGTORAD50)) * 110,
+            startpos.y + cosf(rotate + (DEGTORAD50)) * 110
         }
     };
 

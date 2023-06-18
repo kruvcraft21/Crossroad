@@ -8,7 +8,7 @@
 #include <array>
 
 // Вычисление необходимых констант при компиляции
-constexpr float DEGTORAD60 = 60 * DEG2RAD;
+constexpr float DEGTORAD50 = 50 * DEG2RAD;
 constexpr float DEGTORAD45 = 45 * DEG2RAD;
 
 class Special_Car;

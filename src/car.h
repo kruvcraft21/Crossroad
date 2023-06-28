@@ -30,7 +30,7 @@ public:
     Car(Vector2& dir, Vector2& startpos); // конструктор
     void Draw(); // метод для отрисовки машины
     void Run(); // метод для движения машины
-    Vector2 get_pos(); // метод для получения позиции машины
+    Vector2& get_pos(); // метод для получения позиции машины
     Vector2 get_dir() { return direction; }; // метод для получения направления движения машины
 };
 

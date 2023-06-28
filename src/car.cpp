@@ -21,7 +21,7 @@ void Car::Draw() {
 }
 
 // метод для получения позиции машины
-Vector2 Car::get_pos() {
+Vector2& Car::get_pos() {
     return pos;
 }
 
@@ -202,7 +202,6 @@ void Special_Car::Drive()
     for (auto &car : spec_cars)
     {
         Vector2 position = car.get_pos();
-        Vector2 dir = car.get_dir();
 
         // Проверяем наличие машин спереди, чтобы не было столкновения
         if (CheckCollisionPointTriangle(position, front_triangle[0], front_triangle[1], front_triangle[2]))
@@ -215,7 +214,6 @@ void Special_Car::Drive()
     for (auto &car : simple_cars)
     {
         Vector2 position = car.get_pos();
-        Vector2 dir = car.get_dir();
 
         // Проверяем наличие машин спереди, чтобы не было столкновения
         if (CheckCollisionPointTriangle(position, front_triangle[0], front_triangle[1], front_triangle[2]))

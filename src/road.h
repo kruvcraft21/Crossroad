@@ -8,7 +8,8 @@ typedef struct Mark {
     Vector2 end_pos;
 } Mark;
 
-class Road {
+class Road final
+{
 private:
     Mark mark; // Разметка
     bool isMarking; // Имеет ли дорожный участок разметку

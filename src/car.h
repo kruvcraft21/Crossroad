@@ -24,12 +24,15 @@ protected:
     int speed = 2; // скорость
     Vector2 pos; // позиция
     Color color = BLACK; // цвет
-    std::map<std::string, std::array<Vector2, 3>> overview_car;
+    std::map<std::string, std::array<Vector2, 3>> overview_car; // Треугольники обзора
+
+protected:
+    Car(Vector2& dir, Vector2& startpos); // конструктор
+    void Run(); // метод для движения машины 
 
 public:
-    Car(Vector2& dir, Vector2& startpos); // конструктор
+    Car() = delete;
     void Draw(); // метод для отрисовки машины
-    void Run(); // метод для движения машины
     Vector2& get_pos(); // метод для получения позиции машины
     Vector2 get_dir() { return direction; }; // метод для получения направления движения машины
 };

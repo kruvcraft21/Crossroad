@@ -109,7 +109,7 @@ Simple_Car::Simple_Car(Vector2 &dir, Vector2 &startpos) : Car(dir, startpos) {
 void Simple_Car::Drive()
 {
     // Получаем экземпляр класса Road_Controller и векторы специальных и простых автомобилей
-    auto controller = Road_Controller::getInstance();
+    auto& controller = Road_Controller::getInstance();
     std::vector<Special_Car>& spec_cars = controller.get_spec_cars();
     std::vector<Simple_Car>& simple_cars = controller.get_simple_cars(); 
 
@@ -188,7 +188,7 @@ Special_Car::Special_Car(Vector2& dir, Vector2& startpos) : Car(dir, startpos)
 void Special_Car::Drive()
 {
     // Получаем экземпляр класса Road_Controller и векторы специальных и простых автомобилей
-    Road_Controller controller = Road_Controller::getInstance();
+    auto& controller = Road_Controller::getInstance();
     std::vector<Special_Car> spec_cars = controller.get_spec_cars();
     std::vector<Simple_Car> simple_cars = controller.get_simple_cars(); 
 

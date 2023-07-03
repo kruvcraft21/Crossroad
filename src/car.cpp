@@ -113,7 +113,7 @@ void Simple_Car::Drive()
     std::vector<Special_Car>& spec_cars = controller.get_spec_cars();
     std::vector<Simple_Car>& simple_cars = controller.get_simple_cars(); 
 
-    // Флаг, который показывает, была ли обнаружена препятствие на пути автомобиля
+    // Флаг, который показывает, было ли обнаружена препятствие на пути автомобиля
     bool saw_obstacle = false;
 
     // Получаем треугольники обзора

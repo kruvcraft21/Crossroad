@@ -112,11 +112,11 @@ void Road_Controller::AddCars()
     {
         Vector2 mousepos = GetMousePosition();
         // Проходим по каждой дороге в коллекции
-        for (auto &road : road_collection)
+        for (auto& [road_name, road] : road_collection)
         {
             // Если мышь находится на дороге, кроме центральной, создаем новую простую машину и добавляем ее на дорогу
-            if (road.first != "center" && road.second.CheckCollisionPosition(mousepos)) {
-                Simple_Car car(road.second.get_direction(), road.second.get_start_pos_car());
+            if (road_name != "center" && road.CheckCollisionPosition(mousepos)) {
+                Simple_Car car(road.get_direction(), road.get_start_pos_car());
                 AddSimpleCar(car);
             }
 
@@ -127,11 +127,11 @@ void Road_Controller::AddCars()
     {
         Vector2 mousepos = GetMousePosition();
         // Проходим по каждой дороге в коллекции
-        for (auto &road : road_collection)
+        for (auto& [road_name, road] : road_collection)
         {
             // Если мышь находится на дороге, кроме центральной, создаем новую специальную машину и добавляем ее на дорогу
-            if (road.first != "center" && road.second.CheckCollisionPosition(mousepos)) {
-                Special_Car car(road.second.get_direction(), road.second.get_start_pos_car());
+            if (road_name != "center" && road.CheckCollisionPosition(mousepos)) {
+                Special_Car car(road.get_direction(), road.get_start_pos_car());
                 AddSpecCar(car);
             }
 
